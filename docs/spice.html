@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.2" />
-<title>PyUVS.spice API documentation</title>
+<title>maven_iuvs.spice API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>PyUVS.spice</code></h1>
+<h1 class="title">Module <code>maven_iuvs.spice</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -421,7 +421,7 @@ def load_iuvs_spice(spice_directory, load_all_longterm=False):
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="PyUVS.spice.breakup_path"><code class="name flex">
+<dt id="maven_iuvs.spice.breakup_path"><code class="name flex">
 <span>def <span class="ident">breakup_path</span></span>(<span>string, splitlength)</span>
 </code></dt>
 <dd>
@@ -475,7 +475,7 @@ all of the content of the input string.</dd>
         return breakup</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.spice.find_latest_kernel"><code class="name flex">
+<dt id="maven_iuvs.spice.find_latest_kernel"><code class="name flex">
 <span>def <span class="ident">find_latest_kernel</span></span>(<span>fnamelist_in, part, getlast=False, after=None)</span>
 </code></dt>
 <dd>
@@ -573,7 +573,7 @@ Filename is split by - and _, part is the index of the date component</dd>
         return retlist</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.spice.furnsh_array"><code class="name flex">
+<dt id="maven_iuvs.spice.furnsh_array"><code class="name flex">
 <span>def <span class="ident">furnsh_array</span></span>(<span>kernel_array)</span>
 </code></dt>
 <dd>
@@ -606,7 +606,7 @@ Filename is split by - and _, part is the index of the date component</dd>
     [spice.furnsh(k) for k in kernel_array]</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.spice.load_iuvs_spice"><code class="name flex">
+<dt id="maven_iuvs.spice.load_iuvs_spice"><code class="name flex">
 <span>def <span class="ident">load_iuvs_spice</span></span>(<span>spice_directory, load_all_longterm=False)</span>
 </code></dt>
 <dd>
@@ -673,7 +673,7 @@ Filename is split by - and _, part is the index of the date component</dd>
     spice.furnsh(os.path.join(generic_kpath, &#39;spk&#39;, &#39;mar097.bsp&#39;))</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.spice.load_sc_ck"><code class="name flex">
+<dt id="maven_iuvs.spice.load_sc_ck"><code class="name flex">
 <span>def <span class="ident">load_sc_ck</span></span>(<span>spice_directory, load_cruise=False, load_all_longterm=False)</span>
 </code></dt>
 <dd>
@@ -765,7 +765,7 @@ Filename is split by - and _, part is the index of the date component</dd>
         furnsh_array(find_latest_kernel(f, 4))</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.spice.load_sc_ck_type"><code class="name flex">
+<dt id="maven_iuvs.spice.load_sc_ck_type"><code class="name flex">
 <span>def <span class="ident">load_sc_ck_type</span></span>(<span>kerntype, spice_directory, load_predicts=False, load_all_longterm=False)</span>
 </code></dt>
 <dd>
@@ -855,7 +855,7 @@ Filename is split by - and _, part is the index of the date component</dd>
         furnsh_array(pred_list)</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.spice.load_sc_sclk"><code class="name flex">
+<dt id="maven_iuvs.spice.load_sc_sclk"><code class="name flex">
 <span>def <span class="ident">load_sc_sclk</span></span>(<span>spice_directory)</span>
 </code></dt>
 <dd>
@@ -898,7 +898,7 @@ Filename is split by - and _, part is the index of the date component</dd>
     furnsh_array(f)</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.spice.load_sc_spk"><code class="name flex">
+<dt id="maven_iuvs.spice.load_sc_spk"><code class="name flex">
 <span>def <span class="ident">load_sc_spk</span></span>(<span>spice_directory)</span>
 </code></dt>
 <dd>
@@ -976,19 +976,19 @@ Filename is split by - and _, part is the index of the date component</dd>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="PyUVS" href="index.html">PyUVS</a></code></li>
+<li><code><a title="maven_iuvs" href="index.html">maven_iuvs</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="two-column">
-<li><code><a title="PyUVS.spice.breakup_path" href="#PyUVS.spice.breakup_path">breakup_path</a></code></li>
-<li><code><a title="PyUVS.spice.find_latest_kernel" href="#PyUVS.spice.find_latest_kernel">find_latest_kernel</a></code></li>
-<li><code><a title="PyUVS.spice.furnsh_array" href="#PyUVS.spice.furnsh_array">furnsh_array</a></code></li>
-<li><code><a title="PyUVS.spice.load_iuvs_spice" href="#PyUVS.spice.load_iuvs_spice">load_iuvs_spice</a></code></li>
-<li><code><a title="PyUVS.spice.load_sc_ck" href="#PyUVS.spice.load_sc_ck">load_sc_ck</a></code></li>
-<li><code><a title="PyUVS.spice.load_sc_ck_type" href="#PyUVS.spice.load_sc_ck_type">load_sc_ck_type</a></code></li>
-<li><code><a title="PyUVS.spice.load_sc_sclk" href="#PyUVS.spice.load_sc_sclk">load_sc_sclk</a></code></li>
-<li><code><a title="PyUVS.spice.load_sc_spk" href="#PyUVS.spice.load_sc_spk">load_sc_spk</a></code></li>
+<li><code><a title="maven_iuvs.spice.breakup_path" href="#maven_iuvs.spice.breakup_path">breakup_path</a></code></li>
+<li><code><a title="maven_iuvs.spice.find_latest_kernel" href="#maven_iuvs.spice.find_latest_kernel">find_latest_kernel</a></code></li>
+<li><code><a title="maven_iuvs.spice.furnsh_array" href="#maven_iuvs.spice.furnsh_array">furnsh_array</a></code></li>
+<li><code><a title="maven_iuvs.spice.load_iuvs_spice" href="#maven_iuvs.spice.load_iuvs_spice">load_iuvs_spice</a></code></li>
+<li><code><a title="maven_iuvs.spice.load_sc_ck" href="#maven_iuvs.spice.load_sc_ck">load_sc_ck</a></code></li>
+<li><code><a title="maven_iuvs.spice.load_sc_ck_type" href="#maven_iuvs.spice.load_sc_ck_type">load_sc_ck_type</a></code></li>
+<li><code><a title="maven_iuvs.spice.load_sc_sclk" href="#maven_iuvs.spice.load_sc_sclk">load_sc_sclk</a></code></li>
+<li><code><a title="maven_iuvs.spice.load_sc_spk" href="#maven_iuvs.spice.load_sc_spk">load_sc_spk</a></code></li>
 </ul>
 </li>
 </ul>

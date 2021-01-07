@@ -1,4 +1,7 @@
+docs/user_paths.html
+maven_iuvs/user_paths.py
 *.pyc
 */__pycache__
 .DS_Store
 *.ipynb_checkpoints*
+.idea/

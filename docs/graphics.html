@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.2" />
-<title>PyUVS.graphics API documentation</title>
+<title>maven_iuvs.graphics API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>PyUVS.graphics</code></h1>
+<h1 class="title">Module <code>maven_iuvs.graphics</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -31,6 +31,7 @@
 import cartopy.crs as ccrs
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1.axes_divider import make_axes_locatable
 import numpy as np
 import spiceypy as spice
 from astropy.io import fits
@@ -40,10 +41,11 @@ from shapely.geometry.polygon import LinearRing
 from tempfile import NamedTemporaryFile
 import pkg_resources
 
-from .data import calculate_calibration_curve
-from .geometry import beta_flip, haversine, rotation_matrix
-from .statistics import multiple_linear_regression, integrate_intensity
-from .variables import R_Mars_km, slit_width_deg
+from maven_iuvs.instrument import calculate_calibration_curve
+from maven_iuvs.geometry import beta_flip, haversine, rotation_matrix
+from maven_iuvs.statistics import multiple_linear_regression, integrate_intensity
+from maven_iuvs.instrument import slit_width_deg
+from maven_iuvs.constants import R_Mars_km
 
 # color dictionary
 color_dict = {&#39;red&#39;: &#39;#D62728&#39;, &#39;orange&#39;: &#39;#FF7F0E&#39;, &#39;yellow&#39;: &#39;#FDB813&#39;,
@@ -157,7 +159,7 @@ def colorbar(mappable, axis, ticks=None, ticklabels=None, boundaries=None, minor
     # otherwise, place the colorbar using provided ticks and ticklabels
     if ticks is not None:
         cbar = plt.colorbar(mappable, cax=cax, ticks=ticks, boundaries=boundaries)
-        ticklabels = ticklabels.astype(str)
+        ticklabels = np.array(ticklabels).astype(str)
         if unit is not None:
             ticklabels[-1] += &#39; &#39; + unit
         cbar.ax.set_yticklabels(ticklabels)
@@ -378,13 +380,13 @@ def get_flatfield(n_integrations, n_spatial):
 
     # load the flatfield, interpolate if required using the 133-bin flatfield
     if n_spatial == 133:
-        detector_flat = np.load(os.path.join(pkg_resources.resource_filename(&#39;PyUVS&#39;, &#39;ancillary/&#39;),
+        detector_flat = np.load(os.path.join(pkg_resources.resource_filename(&#39;maven_iuvs&#39;, &#39;ancillary/&#39;),
                                              &#39;mvn_iuv_flatfield-133spa-muv.npy&#39;))[:, :18]
     elif n_spatial == 50:
-        detector_flat = np.load(os.path.join(pkg_resources.resource_filename(&#39;PyUVS&#39;, &#39;ancillary/&#39;),
+        detector_flat = np.load(os.path.join(pkg_resources.resource_filename(&#39;maven_iuvs&#39;, &#39;ancillary/&#39;),
                                              &#39;mvn_iuv_flatfield-50spa-muv.npy&#39;))[:, :18]
     else:
-        detector_full = np.load(os.path.join(pkg_resources.resource_filename(&#39;PyUVS&#39;, &#39;ancillary/&#39;),
+        detector_full = np.load(os.path.join(pkg_resources.resource_filename(&#39;maven_iuvs&#39;, &#39;ancillary/&#39;),
                                              &#39;mvn_iuv_flatfield-133spa-muv.npy&#39;))[:, :18]
         detector_flat = np.zeros((n_spatial, 18))
         for i in range(18):
@@ -1339,7 +1341,7 @@ def reset_symlog_labels(fig, axes):
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="PyUVS.graphics.CO2p_colormap"><code class="name flex">
+<dt id="maven_iuvs.graphics.CO2p_colormap"><code class="name flex">
 <span>def <span class="ident">CO2p_colormap</span></span>(<span>bad=None, n=256)</span>
 </code></dt>
 <dd>
@@ -1397,7 +1399,7 @@ def reset_symlog_labels(fig, axes):
     return cmap</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.CO_colormap"><code class="name flex">
+<dt id="maven_iuvs.graphics.CO_colormap"><code class="name flex">
 <span>def <span class="ident">CO_colormap</span></span>(<span>bad=None, n=256)</span>
 </code></dt>
 <dd>
@@ -1455,7 +1457,7 @@ def reset_symlog_labels(fig, axes):
     return cmap</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.H_colormap"><code class="name flex">
+<dt id="maven_iuvs.graphics.H_colormap"><code class="name flex">
 <span>def <span class="ident">H_colormap</span></span>(<span>bad=None, n=256)</span>
 </code></dt>
 <dd>
@@ -1513,7 +1515,7 @@ def reset_symlog_labels(fig, axes):
     return cmap</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.JGR_format"><code class="name flex">
+<dt id="maven_iuvs.graphics.JGR_format"><code class="name flex">
 <span>def <span class="ident">JGR_format</span></span>(<span>dpi=300, display_widths=False, return_blue=False)</span>
 </code></dt>
 <dd>
@@ -1605,7 +1607,7 @@ Defaults to 300.</dd>
         return JGR_blue</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.NO_colormap"><code class="name flex">
+<dt id="maven_iuvs.graphics.NO_colormap"><code class="name flex">
 <span>def <span class="ident">NO_colormap</span></span>(<span>bad=None, n=256)</span>
 </code></dt>
 <dd>
@@ -1663,7 +1665,7 @@ Defaults to 300.</dd>
     return cmap</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.altitude_mask"><code class="name flex">
+<dt id="maven_iuvs.graphics.altitude_mask"><code class="name flex">
 <span>def <span class="ident">altitude_mask</span></span>(<span>altitude, disk=True)</span>
 </code></dt>
 <dd>
@@ -1722,7 +1724,7 @@ Defaults to 300.</dd>
     return mask</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.angle_meshgrid"><code class="name flex">
+<dt id="maven_iuvs.graphics.angle_meshgrid"><code class="name flex">
 <span>def <span class="ident">angle_meshgrid</span></span>(<span>hdul)</span>
 </code></dt>
 <dd>
@@ -1789,7 +1791,7 @@ Defaults to 300.</dd>
     return X, Y</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.bin_centers_2d"><code class="name flex">
+<dt id="maven_iuvs.graphics.bin_centers_2d"><code class="name flex">
 <span>def <span class="ident">bin_centers_2d</span></span>(<span>x, y, z, xmin, xmax, ymin, ymax, dx=1, dy=1, return_grid=False)</span>
 </code></dt>
 <dd>
@@ -1898,7 +1900,7 @@ for this case but is far more computationally intensive.</p>
         return binned_data.T</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.bin_pixels_2d"><code class="name flex">
+<dt id="maven_iuvs.graphics.bin_pixels_2d"><code class="name flex">
 <span>def <span class="ident">bin_pixels_2d</span></span>(<span>x, y, z, xmin, xmax, ymin, ymax, xthreshold, xthresh_tolerance, dx=1, dy=1, return_grid=False)</span>
 </code></dt>
 <dd>
@@ -2158,7 +2160,7 @@ would say if a pixel has longitudes &gt; 345 and &lt; 15, then it probably cross
         return binned_data</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.colorbar"><code class="name flex">
+<dt id="maven_iuvs.graphics.colorbar"><code class="name flex">
 <span>def <span class="ident">colorbar</span></span>(<span>mappable, axis, ticks=None, ticklabels=None, boundaries=None, minor=True, unit='kR')</span>
 </code></dt>
 <dd>
@@ -2227,7 +2229,7 @@ of the axis to which it's attached.</p>
     # otherwise, place the colorbar using provided ticks and ticklabels
     if ticks is not None:
         cbar = plt.colorbar(mappable, cax=cax, ticks=ticks, boundaries=boundaries)
-        ticklabels = ticklabels.astype(str)
+        ticklabels = np.array(ticklabels).astype(str)
         if unit is not None:
             ticklabels[-1] += &#39; &#39; + unit
         cbar.ax.set_yticklabels(ticklabels)
@@ -2243,7 +2245,7 @@ of the axis to which it's attached.</p>
     return cbar</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.get_flatfield"><code class="name flex">
+<dt id="maven_iuvs.graphics.get_flatfield"><code class="name flex">
 <span>def <span class="ident">get_flatfield</span></span>(<span>n_integrations, n_spatial)</span>
 </code></dt>
 <dd>
@@ -2283,13 +2285,13 @@ of the axis to which it's attached.</p>
 
     # load the flatfield, interpolate if required using the 133-bin flatfield
     if n_spatial == 133:
-        detector_flat = np.load(os.path.join(pkg_resources.resource_filename(&#39;PyUVS&#39;, &#39;ancillary/&#39;),
+        detector_flat = np.load(os.path.join(pkg_resources.resource_filename(&#39;maven_iuvs&#39;, &#39;ancillary/&#39;),
                                              &#39;mvn_iuv_flatfield-133spa-muv.npy&#39;))[:, :18]
     elif n_spatial == 50:
-        detector_flat = np.load(os.path.join(pkg_resources.resource_filename(&#39;PyUVS&#39;, &#39;ancillary/&#39;),
+        detector_flat = np.load(os.path.join(pkg_resources.resource_filename(&#39;maven_iuvs&#39;, &#39;ancillary/&#39;),
                                              &#39;mvn_iuv_flatfield-50spa-muv.npy&#39;))[:, :18]
     else:
-        detector_full = np.load(os.path.join(pkg_resources.resource_filename(&#39;PyUVS&#39;, &#39;ancillary/&#39;),
+        detector_full = np.load(os.path.join(pkg_resources.resource_filename(&#39;maven_iuvs&#39;, &#39;ancillary/&#39;),
                                              &#39;mvn_iuv_flatfield-133spa-muv.npy&#39;))[:, :18]
         detector_flat = np.zeros((n_spatial, 18))
         for i in range(18):
@@ -2302,7 +2304,7 @@ of the axis to which it's attached.</p>
     return flatfield</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.highres_NearsidePerspective"><code class="name flex">
+<dt id="maven_iuvs.graphics.highres_NearsidePerspective"><code class="name flex">
 <span>def <span class="ident">highres_NearsidePerspective</span></span>(<span>projection, altitude, r=3389500.0)</span>
 </code></dt>
 <dd>
@@ -2351,7 +2353,7 @@ of the axis to which it's attached.</p>
     projection._boundary = LinearRing(coords.T)</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.highres_Orthographic"><code class="name flex">
+<dt id="maven_iuvs.graphics.highres_Orthographic"><code class="name flex">
 <span>def <span class="ident">highres_Orthographic</span></span>(<span>projection, r=3389500.0)</span>
 </code></dt>
 <dd>
@@ -2395,7 +2397,7 @@ of the axis to which it's attached.</p>
     projection._boundary = LinearRing(coords.T)</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.latlon_grid"><code class="name flex">
+<dt id="maven_iuvs.graphics.latlon_grid"><code class="name flex">
 <span>def <span class="ident">latlon_grid</span></span>(<span>cx, cy, latitude, longitude, axis)</span>
 </code></dt>
 <dd>
@@ -2464,7 +2466,7 @@ of the axis to which it's attached.</p>
     [l.set_rotation(0) for l in lonl2]</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.latlon_meshgrid"><code class="name flex">
+<dt id="maven_iuvs.graphics.latlon_meshgrid"><code class="name flex">
 <span>def <span class="ident">latlon_meshgrid</span></span>(<span>hdul)</span>
 </code></dt>
 <dd>
@@ -2551,7 +2553,7 @@ of the axis to which it's attached.</p>
     return X, Y, mask</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.mars_orbit_path"><code class="name flex">
+<dt id="maven_iuvs.graphics.mars_orbit_path"><code class="name flex">
 <span>def <span class="ident">mars_orbit_path</span></span>(<span>a, e, theta)</span>
 </code></dt>
 <dd>
@@ -2611,7 +2613,7 @@ of the axis to which it's attached.</p>
     return xr, yr</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.mars_orbit_path_position"><code class="name flex">
+<dt id="maven_iuvs.graphics.mars_orbit_path_position"><code class="name flex">
 <span>def <span class="ident">mars_orbit_path_position</span></span>(<span>a, e, solar_longitude)</span>
 </code></dt>
 <dd>
@@ -2674,7 +2676,7 @@ of the axis to which it's attached.</p>
     return x, y</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.plot_solar_longitude"><code class="name flex">
+<dt id="maven_iuvs.graphics.plot_solar_longitude"><code class="name flex">
 <span>def <span class="ident">plot_solar_longitude</span></span>(<span>ax, solar_longitude)</span>
 </code></dt>
 <dd>
@@ -2755,7 +2757,7 @@ of the axis to which it's attached.</p>
     ax.set_aspect(&#39;equal&#39;)</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.rainbow_colormap"><code class="name flex">
+<dt id="maven_iuvs.graphics.rainbow_colormap"><code class="name flex">
 <span>def <span class="ident">rainbow_colormap</span></span>(<span>bad=None, n=256)</span>
 </code></dt>
 <dd>
@@ -2814,7 +2816,7 @@ of the axis to which it's attached.</p>
     return cmap</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.reset_symlog_labels"><code class="name flex">
+<dt id="maven_iuvs.graphics.reset_symlog_labels"><code class="name flex">
 <span>def <span class="ident">reset_symlog_labels</span></span>(<span>fig, axes)</span>
 </code></dt>
 <dd>
@@ -2876,7 +2878,7 @@ of the axis to which it's attached.</p>
             tick.set_pad(11)</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.resize_data"><code class="name flex">
+<dt id="maven_iuvs.graphics.resize_data"><code class="name flex">
 <span>def <span class="ident">resize_data</span></span>(<span>data, xdim, ydim)</span>
 </code></dt>
 <dd>
@@ -2936,7 +2938,7 @@ of the axis to which it's attached.</p>
     return new_data</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.rotated_transform"><code class="name flex">
+<dt id="maven_iuvs.graphics.rotated_transform"><code class="name flex">
 <span>def <span class="ident">rotated_transform</span></span>(<span>et)</span>
 </code></dt>
 <dd>
@@ -3048,7 +3050,7 @@ of the axis to which it's attached.</p>
     return transform, alt</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.sharpen_image"><code class="name flex">
+<dt id="maven_iuvs.graphics.sharpen_image"><code class="name flex">
 <span>def <span class="ident">sharpen_image</span></span>(<span>image)</span>
 </code></dt>
 <dd>
@@ -3139,7 +3141,7 @@ of the axis to which it's attached.</p>
     return sharpened_image</code></pre>
 </details>
 </dd>
-<dt id="PyUVS.graphics.terminator"><code class="name flex">
+<dt id="maven_iuvs.graphics.terminator"><code class="name flex">
 <span>def <span class="ident">terminator</span></span>(<span>et)</span>
 </code></dt>
 <dd>
@@ -3225,35 +3227,35 @@ and nighttime.</dd>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="PyUVS" href="index.html">PyUVS</a></code></li>
+<li><code><a title="maven_iuvs" href="index.html">maven_iuvs</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="PyUVS.graphics.CO2p_colormap" href="#PyUVS.graphics.CO2p_colormap">CO2p_colormap</a></code></li>
-<li><code><a title="PyUVS.graphics.CO_colormap" href="#PyUVS.graphics.CO_colormap">CO_colormap</a></code></li>
-<li><code><a title="PyUVS.graphics.H_colormap" href="#PyUVS.graphics.H_colormap">H_colormap</a></code></li>
-<li><code><a title="PyUVS.graphics.JGR_format" href="#PyUVS.graphics.JGR_format">JGR_format</a></code></li>
-<li><code><a title="PyUVS.graphics.NO_colormap" href="#PyUVS.graphics.NO_colormap">NO_colormap</a></code></li>
-<li><code><a title="PyUVS.graphics.altitude_mask" href="#PyUVS.graphics.altitude_mask">altitude_mask</a></code></li>
-<li><code><a title="PyUVS.graphics.angle_meshgrid" href="#PyUVS.graphics.angle_meshgrid">angle_meshgrid</a></code></li>
-<li><code><a title="PyUVS.graphics.bin_centers_2d" href="#PyUVS.graphics.bin_centers_2d">bin_centers_2d</a></code></li>
-<li><code><a title="PyUVS.graphics.bin_pixels_2d" href="#PyUVS.graphics.bin_pixels_2d">bin_pixels_2d</a></code></li>
-<li><code><a title="PyUVS.graphics.colorbar" href="#PyUVS.graphics.colorbar">colorbar</a></code></li>
-<li><code><a title="PyUVS.graphics.get_flatfield" href="#PyUVS.graphics.get_flatfield">get_flatfield</a></code></li>
-<li><code><a title="PyUVS.graphics.highres_NearsidePerspective" href="#PyUVS.graphics.highres_NearsidePerspective">highres_NearsidePerspective</a></code></li>
-<li><code><a title="PyUVS.graphics.highres_Orthographic" href="#PyUVS.graphics.highres_Orthographic">highres_Orthographic</a></code></li>
-<li><code><a title="PyUVS.graphics.latlon_grid" href="#PyUVS.graphics.latlon_grid">latlon_grid</a></code></li>
-<li><code><a title="PyUVS.graphics.latlon_meshgrid" href="#PyUVS.graphics.latlon_meshgrid">latlon_meshgrid</a></code></li>
-<li><code><a title="PyUVS.graphics.mars_orbit_path" href="#PyUVS.graphics.mars_orbit_path">mars_orbit_path</a></code></li>
-<li><code><a title="PyUVS.graphics.mars_orbit_path_position" href="#PyUVS.graphics.mars_orbit_path_position">mars_orbit_path_position</a></code></li>
-<li><code><a title="PyUVS.graphics.plot_solar_longitude" href="#PyUVS.graphics.plot_solar_longitude">plot_solar_longitude</a></code></li>
-<li><code><a title="PyUVS.graphics.rainbow_colormap" href="#PyUVS.graphics.rainbow_colormap">rainbow_colormap</a></code></li>
-<li><code><a title="PyUVS.graphics.reset_symlog_labels" href="#PyUVS.graphics.reset_symlog_labels">reset_symlog_labels</a></code></li>
-<li><code><a title="PyUVS.graphics.resize_data" href="#PyUVS.graphics.resize_data">resize_data</a></code></li>
-<li><code><a title="PyUVS.graphics.rotated_transform" href="#PyUVS.graphics.rotated_transform">rotated_transform</a></code></li>
-<li><code><a title="PyUVS.graphics.sharpen_image" href="#PyUVS.graphics.sharpen_image">sharpen_image</a></code></li>
-<li><code><a title="PyUVS.graphics.terminator" href="#PyUVS.graphics.terminator">terminator</a></code></li>
+<li><code><a title="maven_iuvs.graphics.CO2p_colormap" href="#maven_iuvs.graphics.CO2p_colormap">CO2p_colormap</a></code></li>
+<li><code><a title="maven_iuvs.graphics.CO_colormap" href="#maven_iuvs.graphics.CO_colormap">CO_colormap</a></code></li>
+<li><code><a title="maven_iuvs.graphics.H_colormap" href="#maven_iuvs.graphics.H_colormap">H_colormap</a></code></li>
+<li><code><a title="maven_iuvs.graphics.JGR_format" href="#maven_iuvs.graphics.JGR_format">JGR_format</a></code></li>
+<li><code><a title="maven_iuvs.graphics.NO_colormap" href="#maven_iuvs.graphics.NO_colormap">NO_colormap</a></code></li>
+<li><code><a title="maven_iuvs.graphics.altitude_mask" href="#maven_iuvs.graphics.altitude_mask">altitude_mask</a></code></li>
+<li><code><a title="maven_iuvs.graphics.angle_meshgrid" href="#maven_iuvs.graphics.angle_meshgrid">angle_meshgrid</a></code></li>
+<li><code><a title="maven_iuvs.graphics.bin_centers_2d" href="#maven_iuvs.graphics.bin_centers_2d">bin_centers_2d</a></code></li>
+<li><code><a title="maven_iuvs.graphics.bin_pixels_2d" href="#maven_iuvs.graphics.bin_pixels_2d">bin_pixels_2d</a></code></li>
+<li><code><a title="maven_iuvs.graphics.colorbar" href="#maven_iuvs.graphics.colorbar">colorbar</a></code></li>
+<li><code><a title="maven_iuvs.graphics.get_flatfield" href="#maven_iuvs.graphics.get_flatfield">get_flatfield</a></code></li>
+<li><code><a title="maven_iuvs.graphics.highres_NearsidePerspective" href="#maven_iuvs.graphics.highres_NearsidePerspective">highres_NearsidePerspective</a></code></li>
+<li><code><a title="maven_iuvs.graphics.highres_Orthographic" href="#maven_iuvs.graphics.highres_Orthographic">highres_Orthographic</a></code></li>
+<li><code><a title="maven_iuvs.graphics.latlon_grid" href="#maven_iuvs.graphics.latlon_grid">latlon_grid</a></code></li>
+<li><code><a title="maven_iuvs.graphics.latlon_meshgrid" href="#maven_iuvs.graphics.latlon_meshgrid">latlon_meshgrid</a></code></li>
+<li><code><a title="maven_iuvs.graphics.mars_orbit_path" href="#maven_iuvs.graphics.mars_orbit_path">mars_orbit_path</a></code></li>
+<li><code><a title="maven_iuvs.graphics.mars_orbit_path_position" href="#maven_iuvs.graphics.mars_orbit_path_position">mars_orbit_path_position</a></code></li>
+<li><code><a title="maven_iuvs.graphics.plot_solar_longitude" href="#maven_iuvs.graphics.plot_solar_longitude">plot_solar_longitude</a></code></li>
+<li><code><a title="maven_iuvs.graphics.rainbow_colormap" href="#maven_iuvs.graphics.rainbow_colormap">rainbow_colormap</a></code></li>
+<li><code><a title="maven_iuvs.graphics.reset_symlog_labels" href="#maven_iuvs.graphics.reset_symlog_labels">reset_symlog_labels</a></code></li>
+<li><code><a title="maven_iuvs.graphics.resize_data" href="#maven_iuvs.graphics.resize_data">resize_data</a></code></li>
+<li><code><a title="maven_iuvs.graphics.rotated_transform" href="#maven_iuvs.graphics.rotated_transform">rotated_transform</a></code></li>
+<li><code><a title="maven_iuvs.graphics.sharpen_image" href="#maven_iuvs.graphics.sharpen_image">sharpen_image</a></code></li>
+<li><code><a title="maven_iuvs.graphics.terminator" href="#maven_iuvs.graphics.terminator">terminator</a></code></li>
 </ul>
 </li>
 </ul>

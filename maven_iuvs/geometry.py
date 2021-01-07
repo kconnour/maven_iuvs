@@ -10,7 +10,8 @@ from astropy.io import fits
 from skimage.transform import resize
 import pkg_resources
 
-from .variables import R_Mars_km, slit_width_deg
+from maven_iuvs.instrument import slit_width_deg
+from maven_iuvs.constants import R_Mars_km
 
 
 def beta_flip(hdul):
@@ -190,7 +191,7 @@ def highres_swath_geometry(hdul, res=200, twilight='discrete'):
     context_map = np.zeros((hifi_int, hifi_spa, 3))*np.nan
 
     # load Mars surface map and switch longitude domain from [-180,180) to [0, 360)
-    mars_surface_map = plt.imread(os.path.join(pkg_resources.resource_filename('PyUVS', 'ancillary/'),
+    mars_surface_map = plt.imread(os.path.join(pkg_resources.resource_filename('maven_iuvs', 'ancillary/'),
                                                'mars_surface_map.jpg'))
     offset_map = np.zeros_like(mars_surface_map)
     offset_map[:, :1800, :] = mars_surface_map[:, 1800:, :]
@@ -248,7 +249,7 @@ def highres_swath_geometry(hdul, res=200, twilight='discrete'):
 
                 # instead of changing an alpha layer, I just multiply an RGB triplet by a scaling fraction in order to
                 # make it darker; determine that scalar here based on solar zenith angle
-                if twilight is 'discrete':
+                if twilight == 'discrete':
                     if (sza[i, j] > 90) & (sza[i, j] <= 102):
                         twilight = 0.7
                     elif sza[i, j] > 102:
